@@ -137,3 +137,94 @@ After ProductCostHistory UPDATE:
 After Database Restore ProductCostHistory UPDATE:
 
 ![A screenshot of a computer Description automatically generated](media/2df8e7399763c81fb3d0cb29da4586a7.JPG)
+
+# Milestone 6: GEO-REPLICATION and FAILOVER
+
+In this milestone geo-replication configured for the production database. Geo-replication enhances data protection by establishing a synchronised copy of your production Azure SQL database in a secondary region. This strategic redundancy will ensure continuous data availability and minimize potential downtime during unforeseen disruptions.
+
+![A diagram of a computer network Description automatically generated](media/c5fb3b6433d824b79945665a57ea3c99.jpg)
+
+![A screenshot of a computer Description automatically generated](media/d66b2072a3e513da988987bc51085e78.jpg)
+
+![A screenshot of a computer Description automatically generated](media/1f8d9d3dd0d02995c50f728b40ba85d3.jpg)
+
+## 6.2a FORCED FAILOVER:
+
+Forced failover tests aimed at simulating real-world scenarios. The planned failover to the primary region database will allow an assessment of the availability and consistency of the secondary database. This process provides valuable insights into the failover mechanism and its impact on data.
+
+Preparation:
+
+Ensure all prerequisite configurations for geo-replication are in place and fully functional.
+
+Verify that the secondary database is fully synchronized with the primary database, indicating data consistency.
+
+Inform all stakeholders about the planned failover test, including the expected start time and estimated duration.
+
+Step-by-Step Instructions:
+
+Initiate Failover:
+
+Navigate to the Azure portal.
+
+Go to the "SQL databases" section and select your primary database.
+
+In the "Overview" pane, find the "Geo-Replication" option and click on it.
+
+You will see your secondary databases listed. Hover over the secondary database you wish to failover to and click on the "Failover" button.
+
+Confirm the failover operation. This action will promote the secondary database to the primary role.
+
+## 
+
+## 6.2a Forced Failover
+
+Once the failover is initiated, monitor the status in the "Geo-Replication" pane. The failover process might take a few minutes.
+
+After the failover is complete, verification the roles of the databases have switched: the former secondary database should now be listed as the primary.
+
+Perform connectivity tests to ensure applications are now pointing to and able to communicate with the new primary database. Also, four rows of data added to table EmpName table in the primary database.
+
+![A screenshot of a computer Description automatically generated](media/0c0067e90b30f149c36d798514a325fa.jpg)
+
+![A screenshot of a computer Description automatically generated](media/daff6a732ce120fd27f828e2eeafa45b.jpg)
+
+## 6.2b FORCED FAILOVER BACK:
+
+![A screenshot of a computer Description automatically generated](media/2e597395e89d6004b321016d50d5521b.jpg)
+
+![A screenshot of a computer Description automatically generated](media/2db947c02e8ec181f9b19c4e8fc6e100.jpg)
+
+Post-Failover Actions:
+
+Reviewed application and database logs to identify any errors or warnings triggered during the failover process.
+
+Conducted performance and functionality tests to ensure that the applications are operating as expected with the new primary database.
+
+Re-established geo-replication from the new primary to a new secondary database to ensure continuous data protection.
+
+Best Practices:
+
+Always perform failover tests during off-peak hours to minimize the impact on users.
+
+Ensure that all dependent applications are configured to handle database connection string changes dynamically or know how to quickly update them.
+
+After a failover test, closely monitor the new primary database for performance issues or irregularities.
+
+Recovery and Rollback:
+
+If you need to revert the changes made during the forced failover test:
+
+-   Ensure that the original primary database (now acting as a secondary) is fully synchronized.
+-   Follow the same steps as above to fail back to the original primary database.
+-   Validate application connectivity and performance with the restored primary database.
+-   Re-establish geo-replication as required to maintain data redundancy.
+
+Troubleshooting:
+
+Issue: Applications cannot connect to the new primary database after failover.
+
+Solution: Check the database connection strings in your applications to ensure they point to the correct server. Utilize Azure's automatic failover groups for smoother connection string management.
+
+Issue: Data synchronization issues post-failover.
+
+Solution: Verify that all data changes made just before the failover have been synchronized.
